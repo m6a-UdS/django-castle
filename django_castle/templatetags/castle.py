@@ -9,7 +9,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def castle_load(user=None, secure=False, track=False, ):
+def castle_load(user=None, secure=False, track=False):
 	app_id = getattr(settings, "CASTLE_APP_ID", False)
 	if not app_id:
 		raise ImproperlyConfigured("Trying to include {% castle_track %} without settings.CASTLE_APP_ID")
@@ -44,14 +44,13 @@ def castle_load(user=None, secure=False, track=False, ):
 		signature = hash_obj.hexdigest()
 		script += \
 			"""
-	castle('secure', '%(signature)s');
-""" % {
+	_castle('secure', '%(signature)s');""" % {
 				"signature": signature,
 			}
 
 	if track:
 		script += """
-		_castle('trackPageview');
+	_castle('trackPageview');
 		"""
 
 	script += """</script>"""
