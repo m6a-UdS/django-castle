@@ -1,11 +1,10 @@
 from django.contrib import auth
-from Eketorp.castleio.api import CastleIO
+from . import castle_io
 
 __author__ = 'jens'
 
 # Here we mainly define the signals to integrate into castle.io
 
-castle_io = CastleIO()
 
 def catch_login_signal(sender, request, user, **kwargs):
 	castle_io.log_login_success(user, request)
