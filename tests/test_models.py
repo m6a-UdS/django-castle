@@ -10,10 +10,10 @@ Tests for `django-castle` models module.
 
 from django.test import TestCase
 
-from djcastle import models
+from django_castle import models
 
 
-class TestDjcastle(TestCase):
+class Testdjango_castle(TestCase):
 
     def setUp(self):
         pass

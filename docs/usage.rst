@@ -4,7 +4,7 @@ Usage
 
 To use django-castle in a django project::
 
-1. Add the package ``djcastle`` to ``settings.INSTALLED_APPS``
+1. Add the package ``django_castle`` to ``settings.INSTALLED_APPS``
 
 2. Set the following setting variables::
 
