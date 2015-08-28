@@ -10,6 +10,7 @@ register = template.Library()
 
 @register.simple_tag
 def castle_load(user=None, secure=False, track=False):
+	user_id = str(user.id) if user else ""
 	app_id = getattr(settings, "CASTLE_APP_ID", False)
 	if not app_id:
 		raise ImproperlyConfigured("Trying to include {% castle_track %} without settings.CASTLE_APP_ID")
@@ -33,18 +34,18 @@ def castle_load(user=None, secure=False, track=False):
 		"user_created_at": user.date_joined.isoformat()
 		}
 
-	if secure:
-		api_secret = getattr(settings, "CASTLE_API_SECRET", False)
-		if not api_secret:
-			raise ImproperlyConfigured(
-				"Trying to include {% castle_track secret=True %} without settings.CASTLE_API_SECRET")
-		hash_obj = HMAC.new(key=api_secret, msg=str(user.id), digestmod=SHA256)
-		signature = hash_obj.hexdigest()
-		script += \
-			"""
-	_castle('secure', '%(signature)s');""" % {
-				"signature": signature,
-			}
+		if secure:
+			api_secret = getattr(settings, "CASTLE_API_SECRET", False)
+			if not api_secret:
+				raise ImproperlyConfigured(
+					"Trying to include {% castle_track secret=True %} without settings.CASTLE_API_SECRET")
+			hash_obj = HMAC.new(key=api_secret, msg=str(user.id), digestmod=SHA256)
+			signature = hash_obj.hexdigest()
+			script += \
+				"""
+		_castle('secure', '%(signature)s');""" % {
+					"signature": signature,
+				}
 
 	if track:
 		script += """
