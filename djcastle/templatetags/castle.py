@@ -10,9 +10,9 @@ register = template.Library()
 
 @register.simple_tag
 def castle_load(user=None, secure=False, track=False, ):
-	app_id = getattr(settings, "CASTLEIO_APP_ID", False)
+	app_id = getattr(settings, "CASTLE_APP_ID", False)
 	if not app_id:
-		raise ImproperlyConfigured("Trying to include {% castleio_track %} without settings.CASTLEIO_APP_ID")
+		raise ImproperlyConfigured("Trying to include {% castle_track %} without settings.CASTLE_APP_ID")
 
 	script = """
 <script type="text/javascript">
@@ -36,10 +36,10 @@ def castle_load(user=None, secure=False, track=False, ):
 		}
 
 	if secure:
-		api_secret = getattr(settings, "CASTLEIO_API_SECRET", False)
+		api_secret = getattr(settings, "CASTLE_API_SECRET", False)
 		if not api_secret:
 			raise ImproperlyConfigured(
-				"Trying to include {% castleio_track secret=True %} without settings.CASTLEIO_API_SECRET")
+				"Trying to include {% castle_track secret=True %} without settings.CASTLE_API_SECRET")
 		hash_obj = HMAC.new(key=api_secret, msg=str(user.id), digestmod=SHA256)
 		signature = hash_obj.hexdigest()
 		script += \

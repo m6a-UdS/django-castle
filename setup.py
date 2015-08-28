@@ -28,13 +28,13 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-castleio',
+    name='django-castle',
     version=version,
     description="""A django integration for the castle.io service""",
     long_description=readme + '\n\n' + history,
     author='Jens Alm',
     author_email='jens.alm@prorenata.se',
-    url='https://github.com/ulmus/django-castleio',
+    url='https://github.com/ulmus/django-castle',
     packages=[
         'djcastle',
     ],
@@ -43,7 +43,7 @@ setup(
     ],
     license="BSD",
     zip_safe=False,
-    keywords='django-castleio',
+    keywords='django-castle',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django',

@@ -1,5 +1,5 @@
 ===============
-django-castleio
+django-castle
 ===============
 
 A django integration for the castle.io service
@@ -22,10 +22,10 @@ Then use it in a project::
 
 2. Set the following setting variables::
 
-    CASTLEIO_API_KEY = "your key"
-    CASTLEIO_API_SECRET = "your secret"
+    CASTLE_API_KEY = "your key"
+    CASTLE_API_SECRET = "your secret"
 
-3. Add the ``{% load castleio %}`` template tag on the top of your templates where you want to track users
+3. Add the ``{% load castle %}`` template tag on the top of your templates where you want to track users
 
 4. Add the following tags to the templates in the bottom of the head::
 
