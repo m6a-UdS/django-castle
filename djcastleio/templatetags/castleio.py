@@ -7,6 +7,7 @@ from Crypto.Hash import HMAC, SHA256
 
 register = template.Library()
 
+
 @register.simple_tag
 def castleio_load():
 	app_id = getattr(settings, "CASTLEIO_APP_ID", False)
@@ -14,11 +15,14 @@ def castleio_load():
 		raise ImproperlyConfigured("Trying to include {% castleio_load %} without settings.CASTLEIO_APP_ID")
 	return """
 <script type="text/javascript">
-  (function(e,t,n,r){function i(e,n){e=t.createElement("script");e.async=1;e.src=r;n=t.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)}e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)};e.attachEvent?e.attachEvent("onload",i):e.addEventListener("load",i,false)})(window,document,"_castle","//d2t77mnxyo7adj.cloudfront.net/v1/c.js")
-  _castle('setAppId', '%(app_id)s');
-  _castle('trackPageview');
+	(function(e,t,n,r){function i(e,n){e=t.createElement("script");e.async=1;e.src=r;n=t.getElementsByTagName("script")[0];
+	n.parentNode.insertBefore(e,n)}e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)};
+	e.attachEvent?e.attachEvent("onload",i):e.addEventListener("load",i,false)})(window,document,"_castle","//d2t77mnxyo7adj.cloudfront.net/v1/c.js")
+	_castle('setAppId', '%(app_id)s');
+	_castle('trackPageview');
 </script>
-	""" % {"app_id" :app_id}
+""" % {"app_id": app_id}
+
 
 @register.simple_tag
 def castleio_register_user(user):
@@ -26,11 +30,11 @@ def castleio_register_user(user):
 		return ""
 	return """
 <script type="text/javascript">
-  _castle('identify', '%(user_id)s', {
-    created_at: '%(user_created_at)s',
-    email: '%(user_email)s',
-    name: '%(user_name)s'
-  });
+	_castle('identify', '%(user_id)s', {
+		created_at: '%(user_created_at)s',
+		email: '%(user_email)s',
+		name: '%(user_name)s'
+	});
 </script>
 """ % {
 		"user_id": user.id,
@@ -38,6 +42,7 @@ def castleio_register_user(user):
 		"user_name": user.get_full_name(),
 		"user_created_at": user.date_joined.isoformat()
 	}
+
 
 @register.simple_tag
 def castleio_secure(user):
@@ -50,7 +55,7 @@ def castleio_secure(user):
 	signature = hash_obj.hexdigest()
 	return """
 <script type="text/javascript">
-  _castle('secure', '%(signature)s');
+	castle('secure', '%(signature)s');
 </script>
 """ % {
 		"signature": signature,

@@ -12,6 +12,7 @@ def catch_login_signal(sender, request, user, **kwargs):
 
 auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_login_signal")
 
+
 def catch_logout_signal(sender, request, user, **kwargs):
 	castle_io = CastleIO()
 	castle_io.log_logout_success(user, request)

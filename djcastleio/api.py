@@ -18,21 +18,23 @@ class CastleIO(object):
 
 	def log_login_success(self, user, request):
 		headers = self.get_headers_from_request(request)
-		self.make_request("events",data={"name": "$login.succeeded", "user_id": str(user.id)}, headers=headers)
+		user_id = str(user.id) if user else ""
+		self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
 
 	def log_logout_success(self, user, request):
 		headers = self.get_headers_from_request(request)
-		self.make_request("events",data={"name": "$logout.succeeded", "user_id": str(user.id)}, headers=headers)
+		user_id = str(user.id ) if user else ""
+		self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
 	def get_headers_from_request(self, request):
 		return {
-			"X-Castle-Cookie-Id" : request.COOKIES.get("__cid"),
-			"X-Castle-Ip" : request.META.get("REMOTE_ADDR"),
-			"X-Castle-Headers" : json.dumps({
-				"User-Agent" : request.META.get("USER_AGENT"),
+			"X-Castle-Cookie-Id": request.COOKIES.get("__cid"),
+			"X-Castle-Ip": request.META.get("REMOTE_ADDR"),
+			"X-Castle-Headers": json.dumps({
+				"User-Agent": request.META.get("USER_AGENT"),
 				"Accept": request.META.get("HTTP_ACCEPT"),
-				"Accept-Encoding" : request.META.get("HTTP_ACCEPT_ENCODING"),
-				"Accept-Language" : request.META.get("HTTP_ACCEPT_LANGUAGE"),
+				"Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
+				"Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
 			})
 		}
 
