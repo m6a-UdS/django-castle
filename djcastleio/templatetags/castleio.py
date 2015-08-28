@@ -9,7 +9,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def castleio_load(user=None, secret=False, track=False, ):
+def castleio_load(user=None, secure=False, track=False, ):
 	app_id = getattr(settings, "CASTLEIO_APP_ID", False)
 	if not app_id:
 		raise ImproperlyConfigured("Trying to include {% castleio_track %} without settings.CASTLEIO_APP_ID")
@@ -37,7 +37,7 @@ def castleio_load(user=None, secret=False, track=False, ):
 				"user_created_at": user.date_joined.isoformat()
 			}
 
-	if secret:
+	if secure:
 		api_secret = getattr(settings, "CASTLEIO_API_SECRET", False)
 		if not api_secret:
 			raise ImproperlyConfigured(
