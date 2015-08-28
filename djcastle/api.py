@@ -1,19 +1,20 @@
 import json
 from django.conf import settings
-
-__author__ = 'jens'
 import requests
 
-class CastleIO(object):
+__author__ = 'jens'
+
+
+class Castle(object):
 	api_secret = ""
 	api_url = ""
 
 	def __init__(self, api_secret=None, api_url=None):
 		if not api_url:
-			api_url = getattr(settings, "CASTLEIO_API_URL", "https://api.castle.io/v1/")
+			api_url = getattr(settings, "CASTLE_API_URL", "https://api.castle.io/v1/")
 			self.api_url = api_url
 		if not api_secret:
-			api_secret = getattr(settings, "CASTLEIO_API_SECRET")
+			api_secret = getattr(settings, "CASTLE_API_SECRET")
 			self.api_secret = api_secret
 
 	def log_login_success(self, user, request):

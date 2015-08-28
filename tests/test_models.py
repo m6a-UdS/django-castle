@@ -10,7 +10,7 @@ Tests for `django-castleio` models module.
 
 from django.test import TestCase
 
-from djcastleio import models
+from djcastle import models
 
 
 class TestDjcastleio(TestCase):

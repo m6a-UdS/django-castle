@@ -1,5 +1,5 @@
 from django.contrib import auth
-from api import CastleIO
+from api import Castle
 
 __author__ = 'jens'
 
@@ -7,14 +7,14 @@ __author__ = 'jens'
 
 
 def catch_login_signal(sender, request, user, **kwargs):
-	castle_io = CastleIO()
-	castle_io.log_login_success(user, request)
+	castle = Castle()
+	castle.log_login_success(user, request)
 
 auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_login_signal")
 
 
 def catch_logout_signal(sender, request, user, **kwargs):
-	castle_io = CastleIO()
-	castle_io.log_logout_success(user, request)
+	castle = Castle()
+	castle.log_logout_success(user, request)
 
 auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_logout_signal")

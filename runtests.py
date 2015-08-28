@@ -12,12 +12,12 @@ try:
                 "ENGINE": "django.db.backends.sqlite3",
             }
         },
-        ROOT_URLCONF="djcastleio.urls",
+        ROOT_URLCONF="djcastle.urls",
         INSTALLED_APPS=[
             "django.contrib.auth",
             "django.contrib.contenttypes",
             "django.contrib.sites",
-            "djcastleio",
+            "djcastle",
         ],
         SITE_ID=1,
         MIDDLEWARE_CLASSES=(),

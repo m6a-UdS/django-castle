@@ -4,14 +4,14 @@
 import os
 import sys
 
-import djcastleio
+import djcastle
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = djcastleio.__version__
+version = djcastle.__version__
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -36,7 +36,7 @@ setup(
     author_email='jens.alm@prorenata.se',
     url='https://github.com/ulmus/django-castleio',
     packages=[
-        'djcastleio',
+        'djcastle',
     ],
     include_package_data=True,
     install_requires=[

@@ -12,13 +12,13 @@ Using the http://castle.io service this package allows for simple user tracking.
 Quickstart
 ----------
 
-Install django-castleio::
+Install django-castle::
 
-    pip install django-castleio
+    pip install django-castle
 
 Then use it in a project::
 
-1. Add the package ``djcastleio`` to ``settings.INSTALLED_APPS``
+1. Add the package ``djcastle`` to ``settings.INSTALLED_APPS``
 
 2. Set the following setting variables::
 
@@ -29,9 +29,7 @@ Then use it in a project::
 
 4. Add the following tags to the templates in the bottom of the head::
 
-    {% castleio_load %}
-    {% castleio_register_user request.user %}
-    {% castleio_secure %}
+    {% castle_load user=request.user secure=True track=True %}
 
 Features
 --------
