@@ -4,6 +4,8 @@ from django.conf import settings
 __author__ = 'jens'
 import requests
 
+CASTLEIO_TIMEOUT = getattr(settings, "CASTLEIO_TIMEOUT", 10)
+
 class CastleIO(object):
 	api_secret = ""
 	api_url = ""
@@ -38,4 +40,4 @@ class CastleIO(object):
 
 	def make_request(self, endpoint, data, headers):
 		url = "%s/%s" % (self.api_url, endpoint)
-		requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret))
+		requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret), timeout=CASTLEIO_TIMEOUT)
