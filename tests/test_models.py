@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-test_django-castleio
+test_django-castle
 ------------
 
-Tests for `django-castleio` models module.
+Tests for `django-castle` models module.
 """
 
 from django.test import TestCase
 
-from djcastleio import models
+from django_castle import models
 
 
-class TestDjcastleio(TestCase):
+class Testdjango_castle(TestCase):
 
     def setUp(self):
         pass

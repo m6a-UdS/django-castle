@@ -4,14 +4,14 @@
 import os
 import sys
 
-import djcastleio
+import django_castle
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = djcastleio.__version__
+version = django_castle.__version__
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -28,22 +28,22 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-castleio',
+    name='django-castle',
     version=version,
     description="""A django integration for the castle.io service""",
     long_description=readme + '\n\n' + history,
     author='Jens Alm',
     author_email='jens.alm@prorenata.se',
-    url='https://github.com/ulmus/django-castleio',
+    url='https://github.com/ulmus/django-castle',
     packages=[
-        'djcastleio',
+        'django_castle',
     ],
     include_package_data=True,
     install_requires=[
     ],
     license="BSD",
     zip_safe=False,
-    keywords='django-castleio',
+    keywords='django-castle',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django',

@@ -4,9 +4,9 @@ Installation
 
 At the command line::
 
-    $ easy_install django-castleio
+    $ easy_install django-castle
 
 Or, if you have virtualenvwrapper installed::
 
-    $ mkvirtualenv django-castleio
-    $ pip install django-castleio
+    $ mkvirtualenv django-castle
+    $ pip install django-castle

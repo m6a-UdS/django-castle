@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	flake8 djcastleio tests
+	flake8 django_castle tests
 
 test:
 	python runtests.py tests
@@ -33,15 +33,15 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source djcastleio runtests.py tests
+	coverage run --source django_castle runtests.py tests
 	coverage report -m
 	coverage html
 	open htmlcov/index.html
 
 docs:
-	rm -f docs/django-castleio.rst
+	rm -f docs/django-castle.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ djcastleio
+	sphinx-apidoc -o docs/ django_castle
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html
