@@ -4,6 +4,7 @@ import requests
 
 __author__ = 'jens'
 
+CASTLE_TIMEOUT = getattr(settings, "CASTLE_TIMEOUT", 10)
 
 class Castle(object):
 	api_secret = ""
@@ -41,4 +42,4 @@ class Castle(object):
 
 	def make_request(self, endpoint, data, headers):
 		url = "%s/%s" % (self.api_url, endpoint)
-		requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret))
+		requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret), timeout=CASTLE_TIMEOUT)
