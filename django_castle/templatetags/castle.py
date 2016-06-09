@@ -28,7 +28,7 @@ def castle_load(user=None, secure=False, track=False):
 		email: '%(user_email)s',
 		name: '%(user_name)s'
 	});""" % {
-		"user_id": user.id,
+		"user_id": str(user.id)+'_'+user.get_username(),
 		"user_email": user.email,
 		"user_name": user.get_full_name(),
 		"user_created_at": user.date_joined.isoformat()
