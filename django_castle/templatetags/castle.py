@@ -3,6 +3,7 @@ import hmac
 from django import template
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.safestring import mark_safe
 from Crypto.Hash import HMAC, SHA256
 
 register = template.Library()
@@ -53,4 +54,4 @@ def castle_load(user=None, secure=False, track=False):
 """
 
 	script += """</script>"""
-	return script
+	return mark_safe(script)
