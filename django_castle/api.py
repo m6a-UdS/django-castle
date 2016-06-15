@@ -29,7 +29,10 @@ class Castle(object):
         user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
-    def log_login_fail(self, user, request):
+    def log_login_fail(self, credentials):
+        user = credentials.get("user", None)
+        password = credentials.get("password", None)
+        request = credentials.request
         headers = self.get_headers_from_request(request)
         user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$login.failed", "user_id": user_id}, headers=headers)
