@@ -1,5 +1,6 @@
-from django.contrib import auth
+from django.contrib import auth, messages
 from api import Castle
+import inspect
 
 __author__ = 'jens'
 
@@ -9,6 +10,7 @@ __author__ = 'jens'
 def catch_login_signal(sender, request, user, **kwargs):
     castle = Castle()
     castle.log_login_success(user, request)
+    messages.add_message(request, messages.INFO, inspect.stack(), extra_tags='alert-danger')
 
 auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_login_signal")
 
@@ -16,6 +18,7 @@ auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_log
 def catch_logout_signal(sender, request, user, **kwargs):
     castle = Castle()
     castle.log_logout_success(user, request)
+    messages.add_message(request, messages.INFO, inspect.stack(), extra_tags='alert-danger')
 
 auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_logout_signal")
 
@@ -23,5 +26,6 @@ auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_l
 def catch_loginfail_signal(sender, request, user, **kwargs):
     castle = Castle()
     castle.log_login_fail(user, request)
+    messages.add_message(request, messages.INFO, inspect.stack(), extra_tags='alert-danger')
 
 auth.signals.user_login_failed.connect(catch_loginfail_signal, dispatch_uid="castle_loginfail_signal")
