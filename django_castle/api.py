@@ -47,7 +47,7 @@ class Castle(object):
                 "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
                 "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
             })
-        }
+        } if request else {}
 
     def make_request(self, endpoint, data, headers):
         url = "%s/%s" % (self.api_url, endpoint)
