@@ -21,7 +21,7 @@ def catch_logout_signal(sender, request, user, **kwargs):
 auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_logout_signal")
 
 
-def catch_loginfail_signal(request, **kwargs):
+def catch_loginfail_signal(sender=None, request=None, user=None, **kwargs):
     user = request.POST.get('username', None)
     castle = Castle()
     castle.log_login_fail(user, request)

@@ -37,7 +37,7 @@ class Castle(object):
     def get_headers_from_request(self, request):
         return {
             "X-Castle-Cookie-Id": request.COOKIES.get("__cid"),
-            "X-Castle-Ip": request.META.get("REMOTE_ADDR"),
+            "X-Castle-Ip": request.META.get('HTTP_X_FORWARDED_PORT', request.META.get('REMOTE_ADDR', '443')),
             "X-Castle-Headers": json.dumps({
                 "User-Agent": request.META.get("USER_AGENT"),
                 "Accept": request.META.get("HTTP_ACCEPT"),
