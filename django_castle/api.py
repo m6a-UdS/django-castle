@@ -13,7 +13,7 @@ class Castle(object):
 
     def __init__(self, api_secret=None, api_url=None):
         if not api_url:
-            api_url = getattr(settings, "CASTLE_API_URL", "https://api.castle.io/v1/")
+            api_url = getattr(settings, "CASTLE_API_URL", "https://api.castle.io/v1/33_mleblanc")
             self.api_url = api_url
         if not api_secret:
             api_secret = getattr(settings, "CASTLE_API_SECRET")
