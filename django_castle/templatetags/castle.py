@@ -56,6 +56,7 @@ def castle_load(user=None, secure=False, track=False):
     script += """</script>"""
     return mark_safe(script)
 
+
 def castle_userid(user=None):
     castle_id = "<no-id>"
     if user:

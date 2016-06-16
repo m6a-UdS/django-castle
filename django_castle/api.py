@@ -34,15 +34,15 @@ class Castle(object):
         password = credentials.get("password", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request)
-        user_id = castle_userid(user) if user else ""
+        user_id = castle_userid(user)
         return self.make_request("events", data={"name": "$login.failed", "details": {"$login": user_id}}, headers=headers)
 
     def get_headers_from_request(self, request):
         return {
             "X-Castle-Cookie-Id": request.COOKIES.get("__cid"),
-            "X-Castle-Ip": request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '127.0.0.1')),
+            "X-Castle-Ip": request.META.get('HTTP_X_REAL_IP', request.META.get('REMOTE_ADDR', '127.0.0.1')),
             "X-Castle-Headers": json.dumps({
-                "User-Agent": request.META.get("USER_AGENT"),
+                "User-Agent": request.META.get("HTTP_USER_AGENT"),
                 "Accept": request.META.get("HTTP_ACCEPT"),
                 "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
                 "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
