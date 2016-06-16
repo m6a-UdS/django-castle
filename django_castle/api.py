@@ -35,7 +35,7 @@ class Castle(object):
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request)
         user_id = castle_userid(user) if user else ""
-        return self.make_request("events", data={"name": "$login.failed", "user_id": user_id}, headers=headers)
+        return self.make_request("events", data={"name": "$login.failed", "details": {"$login": user_id}}, headers=headers)
 
     def get_headers_from_request(self, request):
         return {
