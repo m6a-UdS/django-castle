@@ -30,7 +30,7 @@ class Castle(object):
         self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
     def log_login_fail(self, credentials):
-        user = credentials.get("user", None)
+        user = credentials.get("username", None)
         password = credentials.get("password", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request)
@@ -46,7 +46,8 @@ class Castle(object):
                 "Accept": request.META.get("HTTP_ACCEPT"),
                 "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
                 "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
-            })
+            }),
+            "X-Castle-Source": "backend"
         } if request else {}
 
     def make_request(self, endpoint, data, headers):
