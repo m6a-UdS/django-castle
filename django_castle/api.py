@@ -52,4 +52,4 @@ class Castle(object):
     def make_request(self, endpoint, data, headers):
         url = "%s/%s" % (self.api_url, endpoint)
         r = requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret), timeout=CASTLE_TIMEOUT)
-        return r.text()
+        return [r.text, headers, data]
