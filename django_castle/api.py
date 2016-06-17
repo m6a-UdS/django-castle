@@ -7,6 +7,7 @@ __author__ = 'jens'
 
 CASTLE_TIMEOUT = getattr(settings, "CASTLE_TIMEOUT", 10)
 
+
 class Castle(object):
     api_secret = ""
     api_url = ""
@@ -24,16 +25,16 @@ class Castle(object):
         user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
 
-    def log_logout_success(self, user, request):
-        headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
-        user_id = castle_userid(user) if user else ""
-        self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
-
     def log_login_fail(self, credentials):
         username = credentials.get("username", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
         self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
+
+    def log_logout_success(self, user, request):
+        headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
     def log_user_registration_success(self, request):
         headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
@@ -45,6 +46,11 @@ class Castle(object):
         user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$registration.failed", "user_id": user_id}, headers=headers)
 
+    def log_email_change_request(self, request):
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": "$email_change.requested", "user_id": user_id}, headers=headers)
+
     def log_email_change_success(self, request):
         headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
         user_id = castle_userid(request.user) if request.user else ""
@@ -54,6 +60,11 @@ class Castle(object):
         headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
         user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$email_change.failed", "user_id": user_id}, headers=headers)
+
+    def log_password_reset_requested(self, request):
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": "$password_reset.requested", "user_id": user_id}, headers=headers)
 
     def log_password_reset_success(self, request):
         headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
@@ -74,6 +85,21 @@ class Castle(object):
         headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
         user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
+
+    def log_challenge_requested(self, request):
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
+
+    def log_challenge_success(self, request):
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
+
+    def log_challenge_fail(self, request):
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
 
     def get_headers_from_request(self, request, source="web", ip_header="REMOTE_ADDR"):
         return {

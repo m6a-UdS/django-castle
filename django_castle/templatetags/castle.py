@@ -60,5 +60,5 @@ def castle_load(user=None, secure=False, track=False):
 def castle_userid(user=None):
     castle_id = "<no-id>"
     if user:
-        castle_id = str(user.id) if user.id else "00" + '_' + user.get_username()
+        castle_id = (str(user.id) if user.id else "00") + '_' + user.get_username()
     return castle_id
