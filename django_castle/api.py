@@ -20,59 +20,59 @@ class Castle(object):
             self.api_secret = api_secret
 
     def log_login_success(self, user, request):
-        headers = self.get_headers_from_request(request)
+        headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
         user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
 
     def log_logout_success(self, user, request):
-        headers = self.get_headers_from_request(request)
+        headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
         user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
     def log_login_fail(self, credentials):
         username = credentials.get("username", None)
         request = credentials.get("request", None)
-        headers = self.get_headers_from_request(request)
+        headers = self.get_headers_from_request(request, ip_header="HTTP_X_REAL_IP")
         self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
 
     def log_user_registration_success(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$registration.succeeded", "user_id": user_id}, headers=headers)
 
     def log_user_registration_failed(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$registration.failed", "user_id": user_id}, headers=headers)
 
     def log_email_change_success(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$email_change.succeeded", "user_id": user_id}, headers=headers)
 
     def log_email_change_failed(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$email_change.failed", "user_id": user_id}, headers=headers)
 
     def log_password_reset_success(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$password_reset.succeeded", "user_id": user_id}, headers=headers)
 
     def log_password_reset_failed(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
 
     def log_password_change_success(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$password_change.succeeded", "user_id": user_id}, headers=headers)
 
     def log_password_change_fail(self, request):
-        headers = self.get_headers_from_request(request, "backend")
-        user_id = castle_userid(user) if user else ""
+        headers = self.get_headers_from_request(request, source="backend", ip_header="HTTP_X_REAL_IP")
+        user_id = castle_userid(request.user) if request.user else ""
         self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
 
     def get_headers_from_request(self, request, source="web", ip_header="REMOTE_ADDR"):
