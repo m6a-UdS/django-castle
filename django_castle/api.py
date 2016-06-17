@@ -36,48 +36,56 @@ class Castle(object):
         self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
 
     def log_user_registration_success(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$registration.succeeded"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$registration.succeeded", "user_id": user_id}, headers=headers)
 
     def log_user_registration_failed(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$registration.failed"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$registration.failed", "user_id": user_id}, headers=headers)
 
     def log_email_change_success(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$email_change.succeeded"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$email_change.succeeded", "user_id": user_id}, headers=headers)
 
     def log_email_change_failed(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$email_change.failed"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$email_change.failed", "user_id": user_id}, headers=headers)
 
     def log_password_reset_success(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$password_reset.succeeded"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$password_reset.succeeded", "user_id": user_id}, headers=headers)
 
     def log_password_reset_failed(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$password_change.failed"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
 
     def log_password_change_success(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$password_change.succeeded"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$password_change.succeeded", "user_id": user_id}, headers=headers)
 
     def log_password_change_fail(self, request):
-        headers = self.get_headers_from_request(request)
-        self.make_request("events", data={"name": "$password_change.failed"}, headers=headers)
+        headers = self.get_headers_from_request(request, "backend")
+        user_id = castle_userid(user) if user else ""
+        self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
 
-    def get_headers_from_request(self, request):
+    def get_headers_from_request(self, request, source="web", ip_header="REMOTE_ADDR"):
         return {
-            "X-Castle-Cookie-Id": request.COOKIES.get("__cid"),
-            "X-Castle-Ip": request.META.get('HTTP_X_REAL_IP', request.META.get('REMOTE_ADDR', '127.0.0.1')),
+            "X-Castle-Cookie-Id": request.COOKIES.get("__cid", "-"),
+            "X-Castle-Ip": request.META.get(ip_header, '127.0.0.1'),
             "X-Castle-Headers": json.dumps({
-                "User-Agent": request.META.get("HTTP_USER_AGENT"),
-                "Accept": request.META.get("HTTP_ACCEPT"),
-                "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
-                "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
+                "User-Agent": request.META.get("HTTP_USER_AGENT", "NOT_PRESENT"),
+                "Accept": request.META.get("HTTP_ACCEPT", "NOT_PRESENT"),
+                "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING", "NOT_PRESENT"),
+                "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE", "NOT_PRESENT"),
             }),
-            "X-Castle-Source": "backend",
+            "X-Castle-Source": source,
             "Content-Type": "application/json"
         } if request else {}
 
