@@ -34,7 +34,7 @@ class Castle(object):
         password = credentials.get("password", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request)
-        return self.make_request("events", data={"name": "$login.failed"}, headers=headers)
+        return self.make_request("events", data={"name": "$login.failed", "details": {"$login": "username"}}, headers=headers)
 
     def get_headers_from_request(self, request):
         return {
@@ -51,5 +51,5 @@ class Castle(object):
 
     def make_request(self, endpoint, data, headers):
         url = "%s/%s" % (self.api_url, endpoint)
-        r = requests.post(url=url, data=data, headers=headers, auth=('', self.api_secret), timeout=CASTLE_TIMEOUT)
+        r = requests.post(url=url, data=json.dumps(data), headers=headers, auth=('', self.api_secret), timeout=CASTLE_TIMEOUT)
         return [url, str(r.status_code), r.text, r.headers, headers, data]
