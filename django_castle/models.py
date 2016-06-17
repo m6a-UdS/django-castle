@@ -23,6 +23,6 @@ auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_l
 
 def catch_loginfail_signal(sender, credentials=None, **kwargs):
     castle = Castle()
-    return castle.log_login_fail(credentials)
+    castle.log_login_fail(credentials)
 
 auth.signals.user_login_failed.connect(catch_loginfail_signal, dispatch_uid="castle_loginfail_signal")
