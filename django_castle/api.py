@@ -31,10 +31,41 @@ class Castle(object):
 
     def log_login_fail(self, credentials):
         username = credentials.get("username", None)
-        password = credentials.get("password", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request)
-        return self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
+        self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
+
+    def log_user_registration_success(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$registration.succeeded"}, headers=headers)
+
+    def log_user_registration_failed(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$registration.failed"}, headers=headers)
+
+    def log_email_change_success(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$email_change.succeeded"}, headers=headers)
+
+    def log_email_change_failed(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$email_change.failed"}, headers=headers)
+
+    def log_password_reset_success(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$password_reset.succeeded"}, headers=headers)
+
+    def log_password_reset_failed(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$password_change.failed"}, headers=headers)
+
+    def log_password_change_success(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$password_change.succeeded"}, headers=headers)
+
+    def log_password_change_fail(self, request):
+        headers = self.get_headers_from_request(request)
+        self.make_request("events", data={"name": "$password_change.failed"}, headers=headers)
 
     def get_headers_from_request(self, request):
         return {
