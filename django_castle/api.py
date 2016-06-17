@@ -46,7 +46,8 @@ class Castle(object):
                 "Accept-Encoding": request.META.get("HTTP_ACCEPT_ENCODING"),
                 "Accept-Language": request.META.get("HTTP_ACCEPT_LANGUAGE"),
             }),
-            "X-Castle-Source": "backend"
+            "X-Castle-Source": "backend",
+            "Content-Type": "application/json"
         } if request else {}
 
     def make_request(self, endpoint, data, headers):
