@@ -1,6 +1,6 @@
 import json
 from django.conf import settings
-from templatetags.castle import castle_userid
+from models import castle_userid
 import requests
 
 __author__ = 'jens'
