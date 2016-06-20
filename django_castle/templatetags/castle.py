@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.safestring import mark_safe
 from Crypto.Hash import HMAC, SHA256
-from ..utils import castle_userid
+from utils import castle_userid
 
 register = template.Library()
 
