@@ -41,7 +41,7 @@ def castle_load(user=None, secure=False, track=False):
             if not api_secret:
                 raise ImproperlyConfigured(
                     "Trying to include {% castle_track secret=True %} without settings.CASTLE_API_SECRET")
-            hash_obj = HMAC.new(key=api_secret, msg=str(user.id), digestmod=SHA256)
+            hash_obj = HMAC.new(key=api_secret, msg=user_id, digestmod=SHA256)
             signature = hash_obj.hexdigest()
             script += \
                 """
