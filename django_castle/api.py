@@ -126,14 +126,14 @@ class Castle(object):
         ip_header = ip_header if ip_header else self.default_ip_header
         headers = self.get_headers_from_request(request, source=source, ip_header=ip_header)
         user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
+        self.make_request("events", data={"name": "$challenge.succeeded", "user_id": user_id}, headers=headers)
 
     def log_challenge_fail(self, request, ip_header=None, source=None):
         source = source if source else self.default_source
         ip_header = ip_header if ip_header else self.default_ip_header
         headers = self.get_headers_from_request(request, source=source, ip_header=ip_header)
         user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
+        self.make_request("events", data={"name": "$challenge.failed", "user_id": user_id}, headers=headers)
 
     def get_headers_from_request(self, request, ip_header=None, source=None):
         source = source if source else self.default_source
