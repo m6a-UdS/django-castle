@@ -1,6 +1,5 @@
 from django.contrib import auth, messages
 from api import Castle
-import inspect
 
 __author__ = 'jens'
 
@@ -26,13 +25,4 @@ def catch_loginfail_signal(sender, credentials=None, **kwargs):
     castle.log_login_fail(credentials)
 
 auth.signals.user_login_failed.connect(catch_loginfail_signal, dispatch_uid="castle_loginfail_signal")
-
-
-# Assuming user is instance of contrib.auth.UserModel
-# implying user.id and user.get_username() both exist.
-def castle_userid(user=None):
-    castle_id = "<no-id>"
-    if user:
-        castle_id = (str(user.id) if user.id else "00") + '_' + user.get_username()
-    return castle_id
 
