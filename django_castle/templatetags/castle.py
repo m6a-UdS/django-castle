@@ -12,7 +12,7 @@ register = template.Library()
 
 @register.simple_tag
 def castle_load(user=None, secure=False, track=False):
-    user_id = str(user.id) if user else ""
+    user_id = castle_userid(user.id)
     app_id = getattr(settings, "CASTLE_APP_ID", False)
     if not app_id:
         raise ImproperlyConfigured("Trying to include {% castle_track %} without settings.CASTLE_APP_ID")
@@ -30,7 +30,7 @@ def castle_load(user=None, secure=False, track=False):
         email: '%(user_email)s',
         name: '%(user_name)s'
     });""" % {
-        "user_id": castle_userid(user),
+        "user_id": user_id,
         "user_email": user.email,
         "user_name": user.get_full_name(),
         "user_created_at": user.date_joined.isoformat()
