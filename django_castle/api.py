@@ -5,16 +5,35 @@ import requests
 
 __author__ = 'jens'
 
-CASTLE_TIMEOUT = getattr(settings, "CASTLE_TIMEOUT", 10)
-
 
 class Castle(object):
-    api_secret = ""
-    api_url = ""
-    default_ip_header = ""
-    default_source = "backend"
 
     def __init__(self, api_secret=None, api_url=None, default_ip_header=None):
+        self.LOGIN_SUCCESS = "$login.succeeded"
+        self.LOGIN_FAILED = "$login.failed"
+        self.LOGOUT_SUCCEEDED = "$logout.succeeded"
+        self.REGISTRATION_SUCCEEDED = "$registration.succeeded"
+        self.REGISTRATION_FAILED = "$registration.failed"
+        self.EMAIL_CHANGE_REQUESTED = "$email_change.requested"
+        self.EMAIL_CHANGE_SUCCEEDED = "$email_change.succeeded"
+        self.EMAIL_CHANGE_FAILED = "$email_change.failed"
+        self.PASSWORD_RESET_REQUESTED = "$password_reset.requested"
+        self.PASSWORD_RESET_SUCCEEDED = "$password_reset.succeeded"
+        self.PASSWORD_RESET_FAILED = "$password_reset.failed"
+        self.PASSWORD_CHANGE_SUCCEEDED = "$password_change.succeeded"
+        self.PASSWORD_CHANGE_FAILED = "$password_change.failed"
+        self.CHALLENGE_REQUESTED = "$challenge.requested"
+        self.CHALLENGE_SUCCEEDED = "$challenge.succeeded"
+        self.CHALLENGE_FAILED = "$challenge.failed"
+
+        self.api_secret = ""
+        self.api_url = ""
+        self.default_ip_header = ""
+        self.default_source = "backend"
+        self.CASTLE_TIMEOUT = getattr(settings, "CASTLE_TIMEOUT", 10)
+
+        self.log_event = {}
+
         if not api_url:
             api_url = getattr(settings, "CASTLE_API_URL", "https://api.castle.io/v1")
             self.api_url = api_url
@@ -25,102 +44,21 @@ class Castle(object):
             default_ip_header = getattr(settings, "CASTLE_IP_HEADER", "REMOTE_ADDR")
             self.default_ip_header = default_ip_header
 
-    def log_login_success(self, user, request, source=None):
+    def log_event(self, request, event, source=None):
         source = source if source else self.default_source
         headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(user) if user else ""
-        self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
+        user_id = castle_userid(request.user) if request.user else ""
+        self.make_request("events", data={"name": event, "user_id": user_id}, headers=headers)
 
+    # ***
+    # This event is a special case because we want to catch the credentials and no user is yet defined
+    # ***
     def log_login_fail(self, credentials, source=None):
         source = source if source else self.default_source
         username = credentials.get("username", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request, source=source)
-        self.make_request("events", data={"name": "$login.failed", "details": {"$login": username}}, headers=headers)
-
-    def log_logout_success(self, user, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(user) if user else ""
-        self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_user_registration_success(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$registration.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_user_registration_failed(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$registration.failed", "user_id": user_id}, headers=headers)
-
-    def log_email_change_request(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$email_change.requested", "user_id": user_id}, headers=headers)
-
-    def log_email_change_success(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$email_change.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_email_change_failed(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$email_change.failed", "user_id": user_id}, headers=headers)
-
-    def log_password_reset_requested(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$password_reset.requested", "user_id": user_id}, headers=headers)
-
-    def log_password_reset_success(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$password_reset.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_password_reset_failed(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
-
-    def log_password_change_success(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$password_change.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_password_change_fail(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$password_change.failed", "user_id": user_id}, headers=headers)
-
-    def log_challenge_requested(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$challenge.requested", "user_id": user_id}, headers=headers)
-
-    def log_challenge_success(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$challenge.succeeded", "user_id": user_id}, headers=headers)
-
-    def log_challenge_fail(self, request, source=None):
-        source = source if source else self.default_source
-        headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if request.user else ""
-        self.make_request("events", data={"name": "$challenge.failed", "user_id": user_id}, headers=headers)
+        self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
 
     def get_headers_from_request(self, request, ip_header=None, source=None):
         source = source if source else self.default_source
@@ -140,5 +78,5 @@ class Castle(object):
 
     def make_request(self, endpoint, data, headers):
         url = "%s/%s" % (self.api_url, endpoint)
-        r = requests.post(url=url, data=json.dumps(data), headers=headers, auth=('', self.api_secret), timeout=CASTLE_TIMEOUT)
+        r = requests.post(url=url, data=json.dumps(data), headers=headers, auth=('', self.api_secret), timeout=self.CASTLE_TIMEOUT)
         return [url, str(r.status_code), r.text, r.headers, headers, data]
