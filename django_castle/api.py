@@ -32,8 +32,6 @@ class Castle(object):
         self.default_source = "backend"
         self.CASTLE_TIMEOUT = getattr(settings, "CASTLE_TIMEOUT", 10)
 
-        self.log_event = {}
-
         if not api_url:
             api_url = getattr(settings, "CASTLE_API_URL", "https://api.castle.io/v1")
             self.api_url = api_url
