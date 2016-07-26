@@ -15,8 +15,7 @@ auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_log
 
 def catch_logout_signal(sender, request, user, **kwargs):
     castle = Castle()
-    castle.log_event(user, request, castle.LOGOUT_SUCCEEDED)
-    castle.log_logout_success(user, request)
+    castle.log_event(user, request, "$logout.succeeded")
 
 auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_logout_signal")
 
