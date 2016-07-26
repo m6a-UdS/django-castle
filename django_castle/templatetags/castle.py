@@ -12,7 +12,7 @@ register = template.Library()
 
 @register.simple_tag
 def castle_load(user=None, secure=False, track=False):
-    user_id = castle_userid(user.id)
+    user_id = castle_userid(user)
     app_id = getattr(settings, "CASTLE_APP_ID", False)
     if not app_id:
         raise ImproperlyConfigured("Trying to include {% castle_track %} without settings.CASTLE_APP_ID")
