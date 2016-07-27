@@ -1,7 +1,9 @@
 import json
 from django.conf import settings
+from django.contrib import messages
 from django_castle.utils import castle_userid
 import requests
+import pprint
 
 __author__ = 'jens'
 
@@ -56,7 +58,8 @@ class Castle(object):
         username = credentials.get("username", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request, source=source)
-        self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
+        resp = self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
+        messages.error(request, pprint.pformat(resp), extra_tags="alert-danger")
 
     def get_headers_from_request(self, request, ip_header=None, source=None):
         source = source if source else self.default_source
