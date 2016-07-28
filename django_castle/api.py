@@ -50,7 +50,7 @@ class Castle(object):
     def log_event(self, request, event, source=None, user=None):
         source = source if source else self.default_source
         headers = self.get_headers_from_request(request, source=source)
-        user_id = castle_userid(request.user) if user else ""
+        user_id = castle_userid(request.user) if request else "<no-id>"
         resp = self.make_request("events", data={"name": event, "user_id": user_id}, headers=headers)
         if request:
             logmessage(request, pprint.pformat(resp))
