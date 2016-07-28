@@ -1,4 +1,4 @@
-
+from django.contrib import messages
 
 # Assuming user is instance of contrib.auth.UserModel
 # implying user.id and user.get_username() both exist.
@@ -7,3 +7,6 @@ def castle_userid(user=None):
     if user:
         castle_id = (str(user.id) if user.id else "00") + '_' + user.get_username()
     return castle_id
+
+def logmessage(request, msg):
+    messages.error(request, msg, extra_tags="alert-danger")
