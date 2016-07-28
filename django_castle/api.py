@@ -52,7 +52,8 @@ class Castle(object):
         headers = self.get_headers_from_request(request, source=source)
         user_id = castle_userid(request.user) if user else ""
         resp = self.make_request("events", data={"name": event, "user_id": user_id}, headers=headers)
-        logmessage(request, pprint.pformat(resp))
+        if request:
+            logmessage(request, pprint.pformat(resp))
 
     # ***
     # This event is a special case because we want to catch the credentials and no user is yet defined
@@ -62,8 +63,7 @@ class Castle(object):
         username = credentials.get("username", None)
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request, source=source)
-        resp = self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
-        logmessage(request, pprint.pformat(resp))
+        self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
 
     def get_headers_from_request(self, request, ip_header=None, source=None):
         source = source if source else self.default_source
