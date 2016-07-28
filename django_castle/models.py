@@ -8,14 +8,14 @@ __author__ = 'jens'
 
 def catch_login_signal(sender, request, user, **kwargs):
     castle = Castle()
-    castle.log_event(request, castle.LOGIN_SUCCESS)
+    castle.log_event(request, castle.LOGIN_SUCCESS, enable_logging=True)
 
 auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_login_signal")
 
 
 def catch_logout_signal(sender, request, user, **kwargs):
     castle = Castle()
-    castle.log_event(request, castle.LOGOUT_SUCCEEDED)
+    castle.log_event(request, castle.LOGOUT_SUCCEEDED, enable_logging=True)
 
 auth.signals.user_logged_out.connect(catch_logout_signal, dispatch_uid="castle_logout_signal")
 

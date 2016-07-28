@@ -47,12 +47,12 @@ class Castle(object):
             default_ip_header = getattr(settings, "CASTLE_IP_HEADER", "REMOTE_ADDR")
             self.default_ip_header = default_ip_header
 
-    def log_event(self, request, event, source=None, user=None):
+    def log_event(self, request, event, source=None, user=None, enable_logging=False):
         source = source if source else self.default_source
         headers = self.get_headers_from_request(request, source=source)
         user_id = castle_userid(request.user) if request else "<no-id>"
         resp = self.make_request("events", data={"name": event, "user_id": user_id}, headers=headers)
-        if request:
+        if request and enable_logging:
             logmessage(request, pprint.pformat(resp))
 
     # ***
