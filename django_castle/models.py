@@ -79,7 +79,7 @@ password_reset_failed_signal.connect(catch_password_reset_failed_signal, dispatc
 
 def catch_password_reset_success_signal(sender, request, **kwargs):
     castle = Castle()
-    castle.log_event(request, castle.EMAIL_CHANGE_FAILED, enable_logging=True)
+    castle.log_event(request, castle.PASSWORD_RESET_SUCCEEDED, enable_logging=True)
 
 password_reset_success_signal.connect(catch_password_reset_success_signal, dispatch_uid="password_reset_success_signal")
 
