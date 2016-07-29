@@ -1,7 +1,7 @@
 import json
 from django.conf import settings
-from django.contrib import messages
 from django_castle.utils import castle_userid
+import django.dispatch
 import requests
 import pprint
 
@@ -48,7 +48,7 @@ class Castle(object):
             default_ip_header = getattr(settings, "CASTLE_IP_HEADER", "REMOTE_ADDR")
             self.default_ip_header = default_ip_header
 
-    def log_event(self, request, event, source=None, user=None, enable_logging=False):
+    def log_event(self, request, event, source=None, enable_logging=False):
         source = source if source else self.default_source
         headers = self.get_headers_from_request(request, source=source)
         user_id = castle_userid(request.user) if request else "<no-id>"
