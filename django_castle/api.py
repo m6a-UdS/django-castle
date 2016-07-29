@@ -1,7 +1,7 @@
 import json
 from django.conf import settings
+from django.contrib import auth
 from django_castle.utils import castle_userid
-import django.dispatch
 import requests
 import pprint
 
@@ -65,6 +65,22 @@ class Castle(object):
         request = credentials.get("request", None)
         headers = self.get_headers_from_request(request, source=source)
         self.make_request("events", data={"name": self.LOGIN_FAILED, "details": {"$login": username}}, headers=headers)
+
+    # ***
+    # Specialised version of log_event; Kept for reverse-compatibility
+    # ***
+    def log_login_success(self, user, request):
+        headers = self.get_headers_from_request(request)
+        user_id = str(user.id) if user else ""
+        self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
+
+    # ***
+    # Specialised version of log_event; Kept for reverse-compatibility
+    # ***
+    def log_logout_success(self, user, request):
+        headers = self.get_headers_from_request(request)
+        user_id = str(user.id ) if user else ""
+        self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
     def get_headers_from_request(self, request, ip_header=None, source=None):
         source = source if source else self.default_source

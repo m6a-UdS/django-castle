@@ -117,3 +117,10 @@ def catch_challenge_success_signal(sender, request, **kwargs):
     castle.log_event(request, castle.CHALLENGE_SUCCEEDED, enable_logging=True)
 
 challenge_success_signal.connect(catch_challenge_success_signal, dispatch_uid="challenge_success_signal")
+
+
+def catch_login_ratelimited_signal(sender, request, **kwargs):
+    castle = Castle()
+    castle.log_event(request, castle.LOGIN_RATELIMITED, enable_logging=True)
+
+login_ratelimited_signal.connect(catch_login_ratelimited_signal, dispatch_uid="login_ratelimited_signal")
