@@ -16,6 +16,7 @@ class Castle(object):
     def __init__(self, api_secret=None, api_url=None, default_ip_header=None):
         self.LOGIN_SUCCESS = "$login.succeeded"
         self.LOGIN_FAILED = "$login.failed"
+        self.LOGIN_RATELIMITED = "login.ratelimited"
         self.LOGOUT_SUCCEEDED = "$logout.succeeded"
         self.REGISTRATION_SUCCEEDED = "$registration.succeeded"
         self.REGISTRATION_FAILED = "$registration.failed"

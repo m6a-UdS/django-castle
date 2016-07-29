@@ -1,4 +1,4 @@
-from django.contrib import auth, messages
+from django.contrib import auth
 from api import Castle
 
 __author__ = 'jens'
