@@ -67,7 +67,7 @@ def catch_password_reset_requested_signal(sender, request, **kwargs):
     castle = Castle()
     castle.log_event(request, castle.PASSWORD_RESET_REQUESTED, enable_logging=True)
 
-password_reset_requested_signal.connect(catch_password_reset_requested_signal(), dispatch_uid="password_reset_requested_signal")
+password_reset_requested_signal.connect(catch_password_reset_requested_signal, dispatch_uid="password_reset_requested_signal")
 
 
 def catch_password_reset_failed_signal(sender, request, **kwargs):
