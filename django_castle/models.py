@@ -9,10 +9,10 @@ __author__ = 'jens'
 
 def catch_login_signal(sender, request, user, enable_logging=False, **kwargs):
     castle = Castle()
-    if request.user:
-        castle.log_event(request, castle.LOGIN_SUCCESS, enable_logging=enable_logging)
-    else:
+    if type(request.user) is str:
         castle.log_login_success(user, request)
+    else:
+        castle.log_event(request, castle.LOGIN_SUCCESS, enable_logging=enable_logging)
 
 auth.signals.user_logged_in.connect(catch_login_signal, dispatch_uid="castle_login_signal")
 
