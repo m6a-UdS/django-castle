@@ -7,7 +7,7 @@ __author__ = 'jens'
 # Here we mainly define the signals to integrate into castle.io
 
 
-def catch_login_signal(sender, request=None, user=None, enable_logging=False, **kwargs):
+def catch_login_signal(sender, request, user, enable_logging=False, **kwargs):
     castle = Castle()
     castle.log_login_success(user, request)
 

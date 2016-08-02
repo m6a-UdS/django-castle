@@ -71,7 +71,7 @@ class Castle(object):
     # ***
     def log_login_success(self, user, request):
         headers = self.get_headers_from_request(request)
-        user_id = str(user.id) if user else ""
+        user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$login.succeeded", "user_id": user_id}, headers=headers)
 
     # ***
@@ -79,7 +79,7 @@ class Castle(object):
     # ***
     def log_logout_success(self, user, request):
         headers = self.get_headers_from_request(request)
-        user_id = str(user.id ) if user else ""
+        user_id = castle_userid(user) if user else ""
         self.make_request("events", data={"name": "$logout.succeeded", "user_id": user_id}, headers=headers)
 
     def get_headers_from_request(self, request, ip_header=None, source=None):

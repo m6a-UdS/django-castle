@@ -6,7 +6,7 @@ from django.contrib import messages
 def castle_userid(user=None):
     castle_id = "<no-id>"
     if user:
-        castle_id = (str(user.id) + '_' + user.get_username() if user.id else "00")
+        castle_id = (str(user.id) + '_' + user.get_username() if user.id else "<no-id>")
     return castle_id
 
 
